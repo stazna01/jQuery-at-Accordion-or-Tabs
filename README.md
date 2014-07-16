@@ -57,7 +57,7 @@ $('.tabs-example').accordionortabs();
 By default no accordion or tab is set to be open. Of course while in tab view, some tab's content must be showing, so it will default to showing the first tab's content, but in accordion mode they will all be shut. If you want the third accordion/tab to be open upon page load, then you would set it to 3. If you want the first accordion/tab to be open no matter which mode it's in, you should set it to 1.
 
 
-####Example Usage
+#####Example Usage
 
 ```html
 <script type="text/javascript">
@@ -73,7 +73,7 @@ $('.tabs-example').accordionortabs({
 If you use this plugin normally to allow for accordions or tabs but have an instance where you want the item to always show as an accordion, give the table a special class or ID, use that class or ID in the jquery selector, and set this option to false.
 
 
-####Example Usage
+#####Example Usage
 
 ```html					
 <script type="text/javascript">
@@ -89,7 +89,7 @@ $('.tabs_never_shown').accordionortabs({
 This plugin will make hashbangs as users browse through your accordion/tabs and will produce urls like www.example.com/your-page.html#!tabset_0=2&tabset_1=1. If you want some nomenclature other than tabset_, indicate that here.
 
 
-####Example Usage
+#####Example Usage
 
 ```html					
 <script type="text/javascript">
