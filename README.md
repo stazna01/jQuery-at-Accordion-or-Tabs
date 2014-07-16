@@ -6,7 +6,7 @@ This plugin is built heavily upon the work by Stuart Robson found at http://code
 
 This plugin also keeps track of accordion/tab states via hashbangs. This is accomplished by way of using "Cowboy" Ben Alman's jQuery BBQ: Back Button & Query Library plugin found at http://benalman.com/projects/jquery-bbq-plugin/.
 
-This plugin has been tested and works with modern versions of Chrome, Firefox, Safari, iOS, and Android. It works perfectly with IE8+.
+This plugin has been tested and works with modern versions of Chrome, Firefox, Safari, iOS, and Android. It works perfectly with IE8+ (please note that you will need to use a version of jQuery prior to 2.0 if you want IE8 support).
 
 ## Usage
 
@@ -70,7 +70,7 @@ $('.tabs-example').accordionortabs({
 
 **tabsIfPossible** (true or false: default is true)
 
-If you use this plugin normally to allow for accordions or tabs but have an instance where you want the item to always show as an accordion, give the table a special class or ID, use that class or ID in the jquery selector, and set this option to false.
+If you use this plugin normally to allow for accordions or tabs but have an instance where you want the item to always show as an accordion, give the table a special class or ID, use that class or ID in the jQuery selector, and set this option to false.
 
 
 #####Example Usage
