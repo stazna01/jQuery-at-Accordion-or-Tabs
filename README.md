@@ -1,6 +1,6 @@
-# at Accordion or Tabs jQuery Plugin
+# at Responsive Accordion or Tabs jQuery Plugin
 
-at Accordion or Tabs is a jQuery plugin that takes unordered lists formatted in a certain manner and can display them as tabs when the tabs fit horizontally, and accordions when they don't.
+at Responsive Accordion or Tabs is a jQuery plugin that takes unordered lists formatted in a certain manner and can display them as tabs when the tabs fit horizontally, and accordions when they don't.
 
 This plugin is built heavily upon the work by Stuart Robson found at http://codepen.io/sturobson/pen/xgfeI. The reason for this plugin, though, is that his method requires changing CSS breakpoints. For static tabs this is not a problem, but I needed something that would always work, no matter what names were added to the tabs. Instead of using hard-coded CSS breakpoints for when the tabs will no longer fit, this plugin is dynamic, as it calculates when to make the tabs an accordion and vice versa.
 

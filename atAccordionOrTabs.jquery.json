@@ -1,13 +1,13 @@
 {
 "name": "atAccordionOrTabs",
-"title": "jQuery at Accordion or Tabs",
-"description": "This is a jQuery plugin for making a set of tabs responsive dynamically. The plugin dynamically detects when the tabs no longer can fit in their container and then turns them into an accordion.",
+"title": "jQuery at Responsive Accordion or Tabs",
+"description": "This is a jQuery plugin for making a set of tabs responsive dynamically.",
 "keywords": [
 "responsive",
 "tabs",
 "accordion"
 ],
-"version": "1.0.0",
+"version": "1.0.1",
 "author": {
 "name": "Nathan Stazewski",
 "url": "https://github.com/stazna01/"
