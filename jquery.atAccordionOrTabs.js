@@ -8,7 +8,7 @@ $.fn.accordionortabs = function( options ) {
 		hashbangPrefix: 'tabset_'
 		}, options );
 		
-	startingOuterWidth =  window.outerWidth; //used later to detect orientation change across all mobile browsers (other methods don't always work on Android)
+	startingOuterWidth =  $(window).width(); //used later to detect orientation change across all mobile browsers (other methods don't always work on Android)
 	is_iOS = /(iPad|iPhone|iPod)/g.test( navigator.userAgent ); //needed due to the fact that iOS scrolling causes false resizes
 	function find_max_tab_width (accordion_or_tabs_object, tabs_when_possible_index) {
 		// if first width check is when the screen is smaller and an accordion pane has wrapped to two lines, the max tab width will be incorrect, so anytime an accordion is switching back to tabs, this function is called again to make sure it really should be changing at that point
@@ -115,8 +115,8 @@ $.fn.accordionortabs = function( options ) {
 		}); //end $(document).ready
 			
 	$(window).resize(function() {
-		if(!is_iOS || (is_iOS && (startingOuterWidth !== window.outerWidth))) {
-			startingOuterWidth = window.outerWidth; //MUST update the starting width so future orientation changes will be noticed
+		if(!is_iOS || (is_iOS && (startingOuterWidth !== $(window).width()))) {
+			startingOuterWidth = $(window).width(); //MUST update the starting width so future orientation changes will be noticed
 			fix_accordion_or_tabs();
 			}
 		});
