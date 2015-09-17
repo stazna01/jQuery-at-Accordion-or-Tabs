@@ -4,8 +4,10 @@ $.fn.accordionortabs = function( options ) {
 	var settings = $.extend({
 		// These are the defaults.
 		defaultOpened: 0,
+		containerBreakPoint: 0, //allows a user to force the vertical mode at a certain pixel width of its container, in the case when a table may technically fit but you'd prefer the vertical mode
 		tabsIfPossible: true,
-		hashbangPrefix: 'tabset_'
+		hashbangPrefix: 'tabset_',
+		centerTabs: false
 		}, options );
 		
 	startingOuterWidth =  $(window).width(); //used later to detect orientation change across all mobile browsers (other methods don't always work on Android)
@@ -16,6 +18,9 @@ $.fn.accordionortabs = function( options ) {
 		tabs_width = 0;
 		$('> li > a', accordion_or_tabs_object ).each(function( index ) {
 			tabs_width = tabs_width + $(this).outerWidth(true) + 5;
+			if (index == 0 && settings.centerTabs === true) {
+				tabs_width = tabs_width - $(this).css('margin-left').replace(/[^-\d\.]/g, '');
+				}
 			if (index == $(this).closest('.at-accordion-or-tabs').find('> li > a').length-1) {
 				largest_tab_widths[tabs_when_possible_index] = tabs_width + 15;
 				fix_accordion_or_tabs();
@@ -27,13 +32,24 @@ $.fn.accordionortabs = function( options ) {
 			
 			$(".bbq.at-accordion-or-tabs.at-tabs-when-possible").each(function( index ) {
 				tabs_when_possible_index = index;
-				if (largest_tab_widths[index] > $(this).width()) { //the width the tabs needs is greater than the available width
+				if ($(this).attr("data-rtContainerBreakPoint")) {
+					rt_user_defined_container_breakpoint = $(this).attr("data-rtContainerBreakPoint");
+					} else {
+						rt_user_defined_container_breakpoint = settings.containerBreakPoint;
+						}
+				if (largest_tab_widths[index] > $(this).width() || rt_user_defined_container_breakpoint >= $(this).width()) { //the width the tabs needs is greater than the available width and the optional user defined container width
+					if (settings.centerTabs === true) {
+						$(this).find('>li>a').eq(0).css('margin-left','');  
+						}
 					$(this).removeClass('at-tabs');
 					var idx = $.bbq.getState( $(this).attr('data-tabset-id'), true ) || 0;
 					if(idx == 0) { //the first tab is showing but only because a tab has to be open, when converting back to an accordion it gets shut because no hashbang exists to have it open
 						$(this).addClass('at-accordion-closed').find('>li>a').eq(0).removeClass('active').next('section').removeClass('is-open').hide();
 						}
 					} else { //there is enough room for the tabs to be shown
+						if (settings.centerTabs === true) {
+							$(this).find('>li>a').eq(0).css('margin-left',($(this).outerWidth(true) - largest_tab_widths[index])/2 + 10);
+							}
 						if (!$(this).hasClass('at-tabs')) { //without this check, the page would get extremely slow as it would be doing lots of unnecessary computations during resizes
 							$(this).addClass('at-tabs');
 							if($(this).hasClass('at-accordion-closed')) { //at-accordion-closed is assigned when an accordion gets converted to tabs and a tab has to be open. this class lets it be known that it should be closed again if converted back to an accordion

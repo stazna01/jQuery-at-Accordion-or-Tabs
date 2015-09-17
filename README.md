@@ -98,3 +98,19 @@ $('.tabs-example').accordionortabs({
 	});
 </script>
 ```
+
+
+**centerTabs** (true or false: default is false)
+
+By default the tabs are aligned left. Set this option to true if you would like the plugin to keep your tabs centered above the content.
+
+
+#####Example Usage
+
+```html					
+<script type="text/javascript">
+$('.tabs-example').accordionortabs({
+	centerTabs: true
+	});
+</script>
+```

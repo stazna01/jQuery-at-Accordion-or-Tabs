@@ -14,14 +14,15 @@
 	border-left: 1px solid #999;
 	width: 100%;
 	padding: 0;
+	clear: both;
 	/*visibility: hidden; */
 }
 
-.at-accordion-or-tabs li {
+.at-accordion-or-tabs > li {
   list-style: none; 
 }
 
-.at-accordion-or-tabs li a {
+.at-accordion-or-tabs > li > a {
 	display: block;
 	padding: 10px 15px;
 	background: #ccc;
@@ -31,21 +32,22 @@
 	color: #000;
 }
 
-.at-accordion-or-tabs li a:hover, .at-accordion-or-tabs li a.active {
+.at-accordion-or-tabs > li > a:hover, .at-accordion-or-tabs > li > a.active {
 	background: #B3B3B3;
 	color: #F2F2F2;
 }
 
-.at-accordion-or-tabs section {
+.at-accordion-or-tabs > li > section {
   display: none;
   background: #ffffff;
   overflow: hidden; 
   padding: 1%;
   position: relative;
-  border-bottom: 1px solid #999; 
+  border-bottom: 1px solid #999;
+  width: 100%;
 }
 
-.no-js .at-accordion-or-tabs section {
+.no-js .at-accordion-or-tabs > li > section {
   display: block;
 }
 
@@ -68,11 +70,11 @@
 	border: none;
 	}
 	
-.at-accordion-or-tabs.at-tabs li {
+.at-accordion-or-tabs.at-tabs > li {
 	display: inline;
 	}
 	
-.at-accordion-or-tabs.at-tabs li a {
+.at-accordion-or-tabs.at-tabs > li > a {
 	display: inline-block;
 	border: 1px #000000 solid;
 	z-index:98;
@@ -81,7 +83,7 @@
 	border-radius: 6px 6px 0 0;
 	}
 	
-.at-accordion-or-tabs.at-tabs li a.active {
+.at-accordion-or-tabs.at-tabs > li > a.active {
 	z-index:100;
 	background-color: #ffffff;
 	color: #000000;
@@ -90,7 +92,7 @@
 	display:inline-block;
 	}
 	
-.at-accordion-or-tabs.at-tabs section {
+.at-accordion-or-tabs.at-tabs > li > section {
 	float: left;
 	top: -1px;
 	left: 0;
