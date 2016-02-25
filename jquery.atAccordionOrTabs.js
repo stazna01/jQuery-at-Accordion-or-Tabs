@@ -12,7 +12,9 @@ $.fn.accordionortabs = function( options ) {
 		
 	startingOuterWidth =  $(window).width(); //used later to detect orientation change across all mobile browsers (other methods don't always work on Android)
 	is_iOS = /(iPad|iPhone|iPod)/g.test( navigator.userAgent ); //needed due to the fact that iOS scrolling causes false resizes
-	function find_max_tab_width (accordion_or_tabs_object, tabs_when_possible_index) {
+	
+	function find_max_tab_width (accordion_or_tabs_object, tabs_when_possible_index, skip_fix_accordion_or_tabs_function) {
+		skip_fix_accordion_or_tabs_function = (typeof skip_fix_accordion_or_tabs_function === 'undefined') ? false : skip_fix_accordion_or_tabs_function;
 		// if first width check is when the screen is smaller and an accordion pane has wrapped to two lines, the max tab width will be incorrect, so anytime an accordion is switching back to tabs, this function is called again to make sure it really should be changing at that point
 		accordion_or_tabs_object.addClass('at-tabs');
 		tabs_width = 0;
@@ -23,9 +25,23 @@ $.fn.accordionortabs = function( options ) {
 				}
 			if (index == $(this).closest('.at-accordion-or-tabs').find('> li > a').length-1) {
 				largest_tab_widths[tabs_when_possible_index] = tabs_width + 15;
-				fix_accordion_or_tabs();
+				if (skip_fix_accordion_or_tabs_function===false) {
+					fix_accordion_or_tabs();
+					}
 				}
 			})
+		}
+	function find_first_tab_width (accordion_or_tabs_object, tabs_when_possible_index) {
+		// need to check if tab sizes have changed, which would indicate a breakpoint has been hit that changed the size of the tabs (which means we'd need to recompute the max tab width). The easiest way is to keep track of the first tab for each tab set and then check on each resize if the first tabs have changed size.
+		skip_fix_accordion_or_tabs_function = (typeof skip_fix_accordion_or_tabs_function === 'undefined') ? false : skip_fix_accordion_or_tabs_function;
+		accordion_or_tabs_object.addClass('at-tabs');
+		$first_tab_width = $('> li > a', accordion_or_tabs_object ).eq( 0 ).outerWidth(true);
+		if(typeof first_tab_widths[tabs_when_possible_index] == 'undefined') {
+			first_tab_widths[tabs_when_possible_index] = $first_tab_width;
+			} else if ($first_tab_width != first_tab_widths[tabs_when_possible_index]) {
+				 first_tab_widths[tabs_when_possible_index] = $first_tab_width;
+				 find_max_tab_width (accordion_or_tabs_object, tabs_when_possible_index,true);
+				}
 		}
 	function fix_accordion_or_tabs() {
 		if ($(".at-accordion-or-tabs.at-tabs-when-possible").length) {
@@ -37,6 +53,7 @@ $.fn.accordionortabs = function( options ) {
 					} else {
 						rt_user_defined_container_breakpoint = settings.containerBreakPoint;
 						}
+				find_first_tab_width($(this),tabs_when_possible_index);
 				if (largest_tab_widths[index] > $(this).width() || rt_user_defined_container_breakpoint >= $(this).width()) { //the width the tabs needs is greater than the available width and the optional user defined container width
 					if (settings.centerTabs === true) {
 						$(this).find('>li>a').eq(0).css('margin-left','');  
@@ -50,11 +67,8 @@ $.fn.accordionortabs = function( options ) {
 						if (settings.centerTabs === true) {
 							$(this).find('>li>a').eq(0).css('margin-left',($(this).outerWidth(true) - largest_tab_widths[index])/2 + 10);
 							}
-						if (!$(this).hasClass('at-tabs')) { //without this check, the page would get extremely slow as it would be doing lots of unnecessary computations during resizes
-							$(this).addClass('at-tabs');
-							if($(this).hasClass('at-accordion-closed')) { //at-accordion-closed is assigned when an accordion gets converted to tabs and a tab has to be open. this class lets it be known that it should be closed again if converted back to an accordion
-								$(this).removeClass('at-accordion-closed').find('>li>a').eq(0).addClass('active').next('section').addClass('is-open').show().focus();
-								}
+						if($(this).hasClass('at-accordion-closed')) { //at-accordion-closed is assigned when an accordion gets converted to tabs and a tab has to be open. this class lets it be known that it should be closed again if converted back to an accordion
+							$(this).removeClass('at-accordion-closed').find('>li>a').eq(0).addClass('active').next('section').addClass('is-open').show().focus();
 							find_max_tab_width ($(this),tabs_when_possible_index); //it's possible the browser was started so small that the text in an accordion pane was taking up more than one line (so the max width is wrong), therefore when accordions switch to tabs we recheck the tab widths and update the array holding those widths
 							}
 						}
@@ -87,8 +101,10 @@ $.fn.accordionortabs = function( options ) {
 		$.param.fragment.ajaxCrawlable( true ); // Enable "AJAX Crawlable" mode. (uses #! instead of just #)
 		
 		largest_tab_widths = new Array();
+		first_tab_widths = new Array();
 
 		$(".bbq.at-accordion-or-tabs.at-tabs-when-possible").each(function( index ) {
+			find_first_tab_width ($(this), index);
 			find_max_tab_width ($(this), index);
 			});
 			
