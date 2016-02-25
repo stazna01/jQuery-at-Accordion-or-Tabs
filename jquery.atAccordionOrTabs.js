@@ -1,9 +1,11 @@
-/****
+/* jQuery at Responsive Accordion or Tabs - v1.0.4 - 2016-02-24
+* https://github.com/stazna01/jQuery-rt-Responsive-Tables
+*
+* This plugin is built heavily upon the work by Chris Coyier
+* found at http://css-tricks.com/responsive-data-tables/
+*
+* Copyright (c) 2016 Nathan Stazewski; Licensed MIT */
 
-jQuery at Responsive Accordion or Tabs
-Version: 1.0.4
-
-***/
 (function ( $ ) {
 $.fn.accordionortabs = function( options ) {
 	// This is the easiest way to have default options.
