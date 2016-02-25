@@ -1,6 +1,11 @@
 @charset "UTF-8";
 /* CSS Document */
+/****
 
+jQuery at Responsive Accordion or Tabs
+Version: 1.0.4
+
+***/
 .aria-only {
 	position: absolute;
 	left: -10000px;

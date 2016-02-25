@@ -1,3 +1,9 @@
+/****
+
+jQuery at Responsive Accordion or Tabs
+Version: 1.0.4
+
+***/
 (function ( $ ) {
 $.fn.accordionortabs = function( options ) {
 	// This is the easiest way to have default options.
