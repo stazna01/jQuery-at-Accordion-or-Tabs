@@ -1,4 +1,4 @@
-/* jQuery at Responsive Accordion or Tabs - v1.0.4 - 2016-02-24
+/* jQuery at Responsive Accordion or Tabs - v1.0.5 - 2016-03-28
 * https://github.com/stazna01/jQuery-rt-Responsive-Tables
 *
 * This plugin is built heavily upon the work by Chris Coyier
@@ -51,7 +51,7 @@ $.fn.accordionortabs = function( options ) {
 				 find_max_tab_width (accordion_or_tabs_object, tabs_when_possible_index,true);
 				}
 		}
-	function fix_accordion_or_tabs() {
+	window.fix_accordion_or_tabs = function() {
 		if ($(".at-accordion-or-tabs.at-tabs-when-possible").length) {
 			
 			$(".bbq.at-accordion-or-tabs.at-tabs-when-possible").each(function( index ) {
@@ -131,7 +131,7 @@ $.fn.accordionortabs = function( options ) {
 			
 			});
 		
-		$('.at-accordion-or-tabs').on('click', 'li > a', function(e) {
+		$('.at-accordion-or-tabs').on('click', '> li > a', function(e) {
 			if(!$(this).hasClass('active')) {
 				var state = {},
 				// Get the id of this tab widget.
