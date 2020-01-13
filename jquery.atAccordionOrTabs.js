@@ -1,10 +1,10 @@
-/* jQuery at Responsive Accordion or Tabs - v1.0.5 - 2016-03-28
+/* jQuery at Responsive Accordion or Tabs - v1.0.6 - 2020-01-13
 * https://github.com/stazna01/jQuery-rt-Responsive-Tables
 *
-* This plugin is built heavily upon the work by Chris Coyier
-* found at http://css-tricks.com/responsive-data-tables/
+* This plugin is built heavily upon the work by Stuart Robson
+* found at http://codepen.io/sturobson/pen/xgfeI
 *
-* Copyright (c) 2016 Nathan Stazewski; Licensed MIT */
+* Copyright (c) 2020 Nathan Stazewski; Licensed MIT */
 
 (function ( $ ) {
 $.fn.accordionortabs = function( options ) {
@@ -30,6 +30,7 @@ $.fn.accordionortabs = function( options ) {
 			tabs_width = tabs_width + $(this).outerWidth(true) + 5;
 			if (index == 0 && settings.centerTabs === true) {
 				tabs_width = tabs_width - $(this).css('margin-left').replace(/[^-\d\.]/g, '');
+				
 				}
 			if (index == $(this).closest('.at-accordion-or-tabs').find('> li > a').length-1) {
 				largest_tab_widths[tabs_when_possible_index] = tabs_width + 15;
@@ -42,7 +43,7 @@ $.fn.accordionortabs = function( options ) {
 	function find_first_tab_width (accordion_or_tabs_object, tabs_when_possible_index) {
 		// need to check if tab sizes have changed, which would indicate a breakpoint has been hit that changed the size of the tabs (which means we'd need to recompute the max tab width). The easiest way is to keep track of the first tab for each tab set and then check on each resize if the first tabs have changed size.
 		skip_fix_accordion_or_tabs_function = (typeof skip_fix_accordion_or_tabs_function === 'undefined') ? false : skip_fix_accordion_or_tabs_function;
-		accordion_or_tabs_object.addClass('at-tabs');
+		//accordion_or_tabs_object.addClass('at-tabs');
 		$first_tab_width = $('> li > a', accordion_or_tabs_object ).eq( 0 ).outerWidth(true);
 		if(typeof first_tab_widths[tabs_when_possible_index] == 'undefined') {
 			first_tab_widths[tabs_when_possible_index] = $first_tab_width;
@@ -69,14 +70,14 @@ $.fn.accordionortabs = function( options ) {
 					$(this).removeClass('at-tabs');
 					var idx = $.bbq.getState( $(this).attr('data-tabset-id'), true ) || 0;
 					if(idx == 0) { //the first tab is showing but only because a tab has to be open, when converting back to an accordion it gets shut because no hashbang exists to have it open
-						$(this).addClass('at-accordion-closed').find('>li>a').eq(0).removeClass('active').next('section').removeClass('is-open').hide();
+						$(this).addClass('at-accordion-closed').find('>li>a').eq(0).removeClass('active').attr('aria-expanded','false').next('section').removeClass('is-open').hide();
 						}
 					} else { //there is enough room for the tabs to be shown
 						if (settings.centerTabs === true) {
 							$(this).find('>li>a').eq(0).css('margin-left',($(this).outerWidth(true) - largest_tab_widths[index])/2 + 10);
 							}
 						if($(this).hasClass('at-accordion-closed')) { //at-accordion-closed is assigned when an accordion gets converted to tabs and a tab has to be open. this class lets it be known that it should be closed again if converted back to an accordion
-							$(this).removeClass('at-accordion-closed').find('>li>a').eq(0).addClass('active').next('section').addClass('is-open').show().focus();
+							$(this).removeClass('at-accordion-closed').find('>li>a').eq(0).addClass('active').attr('aria-expanded','true').next('section').addClass('is-open').show().focus();
 							find_max_tab_width ($(this),tabs_when_possible_index); //it's possible the browser was started so small that the text in an accordion pane was taking up more than one line (so the max width is wrong), therefore when accordions switch to tabs we recheck the tab widths and update the array holding those widths
 							}
 						}
@@ -86,7 +87,7 @@ $.fn.accordionortabs = function( options ) {
 	if (settings.tabsIfPossible == true) {
 		this.addClass('at-tabs-when-possible');
 		}
-	this.find('>li>section').attr('aria-live','assertive');
+	//this.find('>li>section').attr('aria-live','assertive');
 	if (settings.defaultOpened != 0) {
 		this.each(function( index ) {
 			if(settings.defaultOpened <= $(this).find('>li').length) {
@@ -97,11 +98,65 @@ $.fn.accordionortabs = function( options ) {
 		
 		}
 	this.addClass('bbq clearfix at-accordion-or-tabs').find('>li>a').prepend('<span class="at-tab-one-pixel-fix-left"></span><span class="at-tab-one-pixel-fix-right"></span>');
+	
+	this.each(function( index ) {
+		$(this).keydown(function(e){
+
+			// Listen for arrow keys
+			if ([37,38,39,40].indexOf(e.keyCode) == -1) {
+				return;
+			}
+			$temp_tab = $(this).find('>li>a:focus');
+			switch(e.keyCode) {
+				case 38: //up arrow
+				case 37: // left arrow
+					// Make sure to stop event bubbling
+					e.preventDefault();
+					e.stopPropagation();
+
+					// This is the first item in the accordion
+					//$temp_tab = $(this).find('>li').first().find('a');
+					
+					
+					if(($temp_tab.closest("ul").find("li").first()).is($temp_tab.parent())){
+						 //When pressing left arrow on first item, go to last item
+						 $temp_tab.parent().nextAll('li').last().find('>a').focus();
+						
+
+					} else {
+					   // Focus on the previous item in accordion from active item
+					   $temp_tab.parent().prevAll().first().find('>a').focus();
+
+					}
+					break;
+				case 40: //down arrow
+				case 39: // right arrow
+					// Make sure to stop event bubbling
+					e.preventDefault();
+					e.stopPropagation();
+
+
+				   if(($temp_tab.closest("ul").find("li").last()).is($temp_tab.parent())) {
+						// Focus on the last item in the top level
+					   $temp_tab.parent().prevAll('li').last().find('a').first().focus();           
+
+					} else {
+						 $temp_tab.parent().nextAll('li').first().find('a').first().focus();
+
+
+					}
+
+
+					break;
+			}
+    	}); //end keydown
+	});
+	
 	this.each(function( index ) {
 			$(this).attr('data-tabset-id',settings.hashbangPrefix+index);
 			$(this).find('>li>a').each(function( index2 ) {
-				$(this).attr('href','!#'+settings.hashbangPrefix+index+'='+index2);
-				$(this).next('section').prepend('<h1 class="aria-only">'+$(this).text()+'</h1>');
+				$(this).attr('href','!#'+settings.hashbangPrefix+index+'='+index2).attr('aria-controls','sect_'+settings.hashbangPrefix+index+'_'+index2).attr('id','accordion_'+settings.hashbangPrefix+index+'_'+index2).attr('aria-expanded','false'); //set all to aria-expanded false before going through and marking any true
+				$(this).next('section').attr('id','sect_'+settings.hashbangPrefix+index+'_'+index2).attr('aria-labelledby','accordion_'+settings.hashbangPrefix+index+'_'+index2);
 				});
 			});
 	
@@ -181,16 +236,16 @@ $.fn.accordionortabs = function( options ) {
 							$(this).find('.is-open').removeClass('is-open').slideToggle();
 							$(this).find('>li>section').eq( idx - 1 ).toggleClass('is-open').slideToggle();
 							}
-					$(this).find('.active').removeClass('active');
-					$(this).find('>li>a').eq( idx - 1 ).addClass('active').blur();
+					$(this).find('.active').removeClass('active').attr('aria-expanded','false');
+					$(this).find('>li>a').eq( idx - 1 ).addClass('active').attr('aria-expanded','true').blur();
 					}
 				$(this).removeClass('at-accordion-closed'); //needs to be after the if statement so that a fully closed accordion that is opened will have this class removed
 				} else { // if no hash has been set for this .bbq item
 						if ($(this).hasClass("at-accordion-or-tabs") && (!$(this).hasClass("at-tabs"))) { //this is how accordion panes get closed
-							$(this).addClass('at-accordion-closed').find('>li>a.active').removeClass('active').next('section').removeClass('is-open').slideUp();
+							$(this).addClass('at-accordion-closed').find('>li>a.active').removeClass('active').attr('aria-expanded','false').next('section').removeClass('is-open').slideUp();
 							} else if ($(this).hasClass("at-accordion-or-tabs") && ($(this).hasClass("at-tabs") && !$(this).hasClass('at-accordion-closed'))) { //this is how accordion panes get closed
-								$(this).addClass('at-accordion-closed').find('>li>a.active').removeClass('active').next('section').removeClass('is-open').hide();
-								$(this).children('li').first().children('a').addClass('active').next('section').addClass('is-open').show();
+								$(this).addClass('at-accordion-closed').find('>li>a.active').removeClass('active').attr('aria-expanded','false').next('section').removeClass('is-open').hide();
+								$(this).children('li').first().children('a').addClass('active').attr('aria-expanded','true').next('section').addClass('is-open').show();
 								}
 						}
 			});

@@ -6,7 +6,7 @@ This plugin is built heavily upon the work by Stuart Robson found at http://code
 
 This plugin also keeps track of accordion/tab states via hashbangs. This is accomplished by way of using "Cowboy" Ben Alman's jQuery BBQ: Back Button & Query Library plugin found at http://benalman.com/projects/jquery-bbq-plugin/.
 
-This plugin has been tested and works with modern versions of Chrome, Firefox, Safari, iOS, and Android. It works perfectly with IE8+ (please note that you will need to use a version of jQuery prior to 2.0 if you want IE8 support).
+This plugin has been tested and works with modern versions of Chrome, Firefox, Edge, Safari, iOS, and Android.
 
 ## Usage
 
