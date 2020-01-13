@@ -1,5 +1,5 @@
 /* jQuery at Responsive Accordion or Tabs - v1.0.6 - 2020-01-13
-* https://github.com/stazna01/jQuery-rt-Responsive-Tables
+* https://github.com/stazna01/jQuery-at-Accordion-or-Tabs
 *
 * This plugin is built heavily upon the work by Stuart Robson
 * found at http://codepen.io/sturobson/pen/xgfeI
@@ -12,7 +12,7 @@ $.fn.accordionortabs = function( options ) {
 	var settings = $.extend({
 		// These are the defaults.
 		defaultOpened: 0,
-		containerBreakPoint: 0, //allows a user to force the vertical mode at a certain pixel width of its container, in the case when a table may technically fit but you'd prefer the vertical mode
+		containerBreakPoint: 0, //allows a user to force the vertical mode at a certain pixel width of its container, in the case when tabs may technically fit but you'd prefer the vertical mode
 		tabsIfPossible: true,
 		hashbangPrefix: 'tabset_',
 		centerTabs: false
